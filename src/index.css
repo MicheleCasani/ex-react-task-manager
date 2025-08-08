@@ -27,3 +27,42 @@
     border-radius: 50px;
     background-color: #ffffff;
 }
+
+/* Stili per la tabella dei task */
+table {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Intestazioni della tabella */
+th {
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Celle della tabella */
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f1f3f4;
+    color: #555;
+}
+
+/* Effetto hover sulle righe */
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Ultima riga senza bordo */
+tr:last-child td {
+    border-bottom: none;
+}
