@@ -10,7 +10,7 @@ const TaskList = () => {
 
     return (
         <div>
-            <h1>pagina TaskList</h1>
+            <h1>Lista dei Taskt</h1>
             <table>
                 <thead>
                     <tr>

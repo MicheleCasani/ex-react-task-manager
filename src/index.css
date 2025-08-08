@@ -10,7 +10,8 @@
 
 .container {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .navbar {
@@ -21,11 +22,14 @@
 }
 
 .btn {
-    color: rgb(0, 0, 0);
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
     text-decoration: none;
-    padding: 8px;
-    border-radius: 50px;
-    background-color: #ffffff;
 }
 
 /* Stili per la tabella dei task */
@@ -65,4 +69,30 @@ tr:hover {
 /* Ultima riga senza bordo */
 tr:last-child td {
     border-bottom: none;
+}
+
+.form-container {
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-top: 15px;
+}
+
+.form-group {
+    margin: 15px;
+}
+
+.form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+h1 {
+    margin-top: 15px;
 }
