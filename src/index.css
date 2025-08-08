@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.default-layout {
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    background-color: #282c34;
+    padding: 1rem;
+}
+
+.btn {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 50px;
+    background-color: #ffffff;
+}
