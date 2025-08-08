@@ -21,16 +21,11 @@ const AddTask = () => {
 
         // validazione del titolo
         if (title.trim() === '') {
-            setError('il Titolo è obbligatorio')
+            setError('Il titolo è obbligatorio')
             return;
         }
 
-        // validazione della descrizione
-        if (descriptionRef.current.value.trim() === '') {
-            setError('la Descrizione è obbligatoria')
-            return;
-        }
-
+        // ciclo il titolo del task e controllo con includes se il carattere ciclato del titolo è presente nei simboli non consentiti
         for (let char of title) {
             if (symbols.includes(char)) {
                 setError('Il titolo non può contenere simboli speciali');
@@ -42,13 +37,13 @@ const AddTask = () => {
         setError('');
 
         // se non ci sono errori riporto i dati
-        const taskData = {
-            title: title,
-            description: descriptionRef.current.value,
+        const newTask = {
+            title: title.trim(),
+            description: descriptionRef.current.value.trim(),
             status: statusRef.current.value
         }
 
-        console.log("Dati del task:", taskData);
+        console.log("Dati del nuovo task:", newTask);
 
         // pulisco i dati dopo l'invio
         setTitle('');
@@ -61,6 +56,7 @@ const AddTask = () => {
             <h1>Aggiungi Task</h1>
             <div className='form-container'>
                 <form action="" onSubmit={handleSubmit}>
+
                     <div className='form-group'>
                         <label htmlFor="taskName" className='form-label'>Nome Task</label>
                         <input type="text" id="taskName"
@@ -69,7 +65,7 @@ const AddTask = () => {
                         />
                     </div>
 
-                    {error && <span style={{ color: 'red', fontSize: '12px' }}>{error}</span>}
+                    {error && <span style={{ color: 'red', fontSize: '15px', marginLeft: '15px' }}>{error}</span>}
 
                     <div className='form-group'>
                         <label htmlFor="taskDescription" className='form-label'>Descrizione Task</label>
