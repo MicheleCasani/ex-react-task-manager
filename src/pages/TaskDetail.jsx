@@ -3,21 +3,40 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import { GlobalContext } from '../context/GlobalContext'
 import Modal from '../components/Modal'
+import EditTaskModal from '../components/EditTaskModal'
 
 const TaskDetail = () => {
 
     const { id } = useParams(); // tramite l'hook useparams recuperi l'id del task selezionato
 
-    const { task, removeTask } = useContext(GlobalContext);
-
-    // Stati per i modal
-    const [showConfirmModal, setShowConfirmModal] = useState(false);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const { task, removeTask, updateTask } = useContext(GlobalContext);
 
     const navigate = useNavigate();
 
+
+    // Stati per i modal di cancellazine della task
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    // stato della modale per la modifica delle task
+    const [showEditModal, setShowEditModal] = useState(false);
+
+    const handleEditClick = () => {
+        setShowEditModal(true); // Mostra il modal di modifica
+    }
+
     const handleDeleteClick = () => {
         setShowConfirmModal(true); // Mostra il modal di conferma
+    }
+
+    const handleUpdateTask = async (updatedTask) => {
+        try {
+            await updateTask(updatedTask.id, updatedTask);  // ← Aggiungi .id
+            alert("Task aggiornato con successo!");  // ← Aggiungi messaggio successo
+            setShowEditModal(false);
+        } catch (error) {
+            alert("Impossibile aggiornare il task!");
+        }
     }
 
     const handleDelete = async () => {
@@ -61,9 +80,15 @@ const TaskDetail = () => {
                         <strong>Creato il:</strong> {new Date(currentTask.createdAt).toLocaleDateString()}
                     </div>
 
-                    <button className="delete-button" onClick={handleDeleteClick}>
-                        Elimina Task
-                    </button>
+                    <div className='task-actions'>
+                        <button className="delete-button" onClick={handleDeleteClick}>
+                            Elimina Task
+                        </button>
+
+                        <button className="edit-button" onClick={handleEditClick}>
+                            Modifica Task
+                        </button>
+                    </div>
                 </>
             ) : (
                 <h2>Elaborazione...</h2>
@@ -87,6 +112,14 @@ const TaskDetail = () => {
                 onClose={() => setShowConfirmModal(false)}
                 onConfirm={handleDelete}
                 confirmText="Elimina"
+            />
+
+            {/* modale di modifica */}
+            <EditTaskModal
+                show={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                onSave={handleUpdateTask}
+                task={currentTask}
             />
 
         </div>

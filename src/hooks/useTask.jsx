@@ -78,8 +78,34 @@ const useTask = () => {
 
     }
 
-    const updateTask = () => {
-        // Funzione per aggiornare un task
+    const updateTask = async (taskId, updatedTask) => {
+        try {
+            const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedTask)
+            })
+            const data = await response.json();
+            if (data.success) {
+                setTask((prevTask) => {
+                    return prevTask.map(task => {
+                        if (task.id === taskId) {
+                            return data.task;  // Task aggiornato
+                        } else {
+                            return task;       // Task originale
+                        }
+                    })
+                })
+            }
+            else {
+                throw new Error('Errore durante l\'aggiornamento del task:', data.message);
+            }
+        }
+        catch (error) {
+            throw error; // Rilancia l'errore per gestirlo nel componente
+        }
     }
 
     return {

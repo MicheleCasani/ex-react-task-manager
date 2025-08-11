@@ -104,7 +104,7 @@ h1 {
 
 /* Stili per la pagina TaskDetail */
 .task-detail {
-    max-width: 600px;
+    width: 500px;
     margin: 20px auto;
     background-color: white;
     padding: 30px;
@@ -164,4 +164,23 @@ h1 {
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.task-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.edit-button {
+    background-color: #000000;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
 }

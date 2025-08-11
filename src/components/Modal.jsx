@@ -8,7 +8,7 @@ const Modal = ({ title, content, show, onClose, onConfirm, confirmText }) => {
         <div className="modal-backdrop" onClick={onClose}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
                 <h2>{title}</h2>
-                <p>{content}</p>
+                <div>{content}</div>
                 <button onClick={onClose}>Cancel</button>
                 <button onClick={onConfirm}>{confirmText}</button>
             </div>

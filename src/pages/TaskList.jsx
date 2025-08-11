@@ -2,11 +2,18 @@ import React from 'react'
 import { useContext } from 'react'
 import { GlobalContext } from '../context/GlobalContext'
 import TaskRow from '../components/TaskRow'
+import { useState } from 'react'
 
 const TaskList = () => {
 
     // Recupera il contesto globale
     const { task } = useContext(GlobalContext)
+
+    // stati per l'ordinamento
+    const [sortBy, setSortBy] = useState('createdAt');  // Default: createdAt
+    const [sortOrder, setSortOrder] = useState(1);    // Default: ascending
+
+
 
     return (
         <div>
@@ -14,9 +21,9 @@ const TaskList = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>stato</th>
-                        <th>Data di creazione</th>
+                        <th><button onClick={''}>Nome</button></th>
+                        <th><button onClick={''}>Stato</button></th>
+                        <th><button onClick={''}>Data di creazione</button></th>
                     </tr>
                 </thead>
                 <tbody>
