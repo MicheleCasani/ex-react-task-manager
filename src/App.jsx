@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import DefaultLayout from './layout/DefaultLayout';
 import TaskList from './pages/TaskList';
 import AddTask from './pages/AddTask';
+import TaskDetail from './pages/TaskDetail';
 import { GlobalProvider } from './context/GlobalContext';
 
 
@@ -16,6 +17,7 @@ function App() {
           <Route element={<DefaultLayout />}> {/* Layout con Navbar */}
             <Route path="/" element={<TaskList />} /> {/* Pagina per visualizzare i task */}
             <Route path="/add" element={<AddTask />} /> {/* Pagina per aggiungere un nuovo task */}
+            <Route path="/task/:id" element={<TaskDetail />} /> {/* Pagina per visualizzare i dettagli di un task */}
           </Route>
         </Routes>
       </BrowserRouter>

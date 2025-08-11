@@ -5,9 +5,10 @@ const useTask = () => {
     // Stato per i task, inizialmente vuoto
     const [task, setTask] = useState([]);
 
-    useEffect(() => {
-        const API_URL = import.meta.env.VITE_API_URL;
+    // URL dell'API recuperato dal file .env
+    const API_URL = import.meta.env.VITE_API_URL;
 
+    useEffect(() => {
         // Chiamata API per prendere i task
         const fetchTasks = async () => {
             // Prova a fare la fetch dei task
@@ -25,8 +26,32 @@ const useTask = () => {
         fetchTasks(); // Chiama la funzione per prendere i task
     }, [])
 
-    const addTask = () => {
-        // Funzione per aggiungere un task
+    // funzione per aggiungere un task
+    const addTask = async (newTask) => {
+        try {
+            // Effettua la chiamata POST per aggiungere un nuovo task
+            const response = await fetch(`${API_URL}/tasks`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newTask)
+            })
+            const data = await response.json();
+
+            if (data.success) {
+                setTask((prevTask) => {
+                    return [...prevTask, data.task];
+                })
+                console.log('Task aggiunto con successo:', data.task);
+            }
+            else {
+                throw new Error('Errore durante l\'aggiunta del task: ' + error.message);
+            }
+        } catch (error) {
+            console.log('Errore durante l\'aggiunta del task:', error);
+        }
+
     }
 
     const removeTask = () => {

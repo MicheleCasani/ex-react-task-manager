@@ -1,7 +1,12 @@
 import React from 'react'
 import { useState, useRef } from 'react'
+import { useContext } from 'react'
+import { GlobalContext } from '../context/GlobalContext'
 
 const AddTask = () => {
+
+    // Recupero la funzione addTask dal contesto globale
+    const { addTask } = useContext(GlobalContext);
 
     // Stato per il titolo del task
     const [title, setTitle] = useState('');
@@ -16,7 +21,7 @@ const AddTask = () => {
     // costante con i simboli non consentiti
     const symbols = "!@#$%^&*()-_=+[]{}|;:'\\\",.<>?/`~";
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); // Previene il refresh della pagina
 
         // validazione del titolo
@@ -43,12 +48,23 @@ const AddTask = () => {
             status: statusRef.current.value
         }
 
-        console.log("Dati del nuovo task:", newTask);
+        // se la risposta è positiva mostro un alert di successo
+        try {
+            await addTask(newTask);
+            alert('Task aggiunto con successo!');
 
-        // pulisco i dati dopo l'invio
-        setTitle('');
-        descriptionRef.current.value = '';
-        statusRef.current.value = 'To do';
+            // pulisco i dati dopo l'invio
+            setTitle('');
+            descriptionRef.current.value = '';
+            statusRef.current.value = 'To do';
+
+        }
+        // se la risposta è negativa mostro un alert di errore
+        catch (error) {
+            alert('Errore durante l\'aggiunta del task: ' + error);
+        }
+
+
     }
 
     return (

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 // Componente per visualizzare una riga di un task
 const TaskRow = ({ item }) => {
@@ -13,7 +14,7 @@ const TaskRow = ({ item }) => {
 
     return (
         <tr>
-            <td>{item.title}</td>
+            <td><Link to={`/task/${item.id}`} className='link-task'>{item.title}</Link></td>
             {/* cambio lo stile della cella in base allo stato del task usando la funzione getStatusColor */}
             <td style={{ backgroundColor: getStatusColor(item.status) }}>{item.status}</td>
             <td>{new Date(item.createdAt).toLocaleDateString()}</td>
