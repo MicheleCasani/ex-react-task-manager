@@ -1,7 +1,8 @@
 import React from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { GlobalContext } from '../context/GlobalContext'
+import Modal from '../components/Modal'
 
 const TaskDetail = () => {
 
@@ -9,13 +10,21 @@ const TaskDetail = () => {
 
     const { task, removeTask } = useContext(GlobalContext);
 
+    // Stati per i modal
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
     const navigate = useNavigate();
 
+    const handleDeleteClick = () => {
+        setShowConfirmModal(true); // Mostra il modal di conferma
+    }
+
     const handleDelete = async () => {
+        setShowConfirmModal(false); // Chiudi il modal di conferma
         try {
             await removeTask(currentTask);
-            alert("Task eliminato con successo!");
-            navigate('/');
+            setShowSuccessModal(true); // Mostra il modal di successo
         } catch (error) {
             alert("Impossibile eliminare il task!");
         }
@@ -26,31 +35,60 @@ const TaskDetail = () => {
             task.id === parseInt(id)
         )
     })
-    if (!currentTask) return <h2>Task non trovato!</h2>; // se non trovi il task con quell'id, ritorni un messaggio di errore
+
+    // Se il task non esiste E non stiamo mostrando il modal di successo, mostra errore
+    if (!currentTask && !showSuccessModal) return <h2>Task non trovato!</h2>;
 
     return (
         <div className="task-detail">
-            <h2>Dettagli Task</h2>
+            {currentTask ? (
+                <>
+                    <h2>Dettagli Task</h2>
 
-            <div className="task-info">
-                <strong>Nome:</strong> {currentTask.title}
-            </div>
+                    <div className="task-info">
+                        <strong>Nome:</strong> {currentTask.title}
+                    </div>
 
-            <div className="task-info">
-                <strong>Descrizione:</strong> {currentTask.description}
-            </div>
+                    <div className="task-info">
+                        <strong>Descrizione:</strong> {currentTask.description}
+                    </div>
 
-            <div className="task-info">
-                <strong>Stato:</strong> {currentTask.status}
-            </div>
+                    <div className="task-info">
+                        <strong>Stato:</strong> {currentTask.status}
+                    </div>
 
-            <div className="task-info">
-                <strong>Creato il:</strong> {new Date(currentTask.createdAt).toLocaleDateString()}
-            </div>
+                    <div className="task-info">
+                        <strong>Creato il:</strong> {new Date(currentTask.createdAt).toLocaleDateString()}
+                    </div>
 
-            <button className="delete-button" onClick={handleDelete}>
-                Elimina Task
-            </button>
+                    <button className="delete-button" onClick={handleDeleteClick}>
+                        Elimina Task
+                    </button>
+                </>
+            ) : (
+                <h2>Elaborazione...</h2>
+            )}
+
+            {/* modale di successo */}
+            <Modal
+                title="Task Eliminato"
+                content="Il task è stato eliminato con successo."
+                show={showSuccessModal}
+                onClose={() => navigate('/')}
+                onConfirm={() => navigate('/')}
+                confirmText="OK"
+            />
+
+            {/* modale di conferma eliminazione */}
+            <Modal
+                title="Conferma Eliminazione"
+                content="Sei sicuro di voler eliminare questo task?"
+                show={showConfirmModal}
+                onClose={() => setShowConfirmModal(false)}
+                onConfirm={handleDelete}
+                confirmText="Elimina"
+            />
+
         </div>
     )
 }
