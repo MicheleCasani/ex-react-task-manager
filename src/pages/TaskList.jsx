@@ -2,7 +2,7 @@ import React from 'react'
 import { useContext } from 'react'
 import { GlobalContext } from '../context/GlobalContext'
 import TaskRow from '../components/TaskRow'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 
 const TaskList = () => {
 
@@ -12,6 +12,19 @@ const TaskList = () => {
     // stati per l'ordinamento
     const [sortBy, setSortBy] = useState('createdAt');  // Default: createdAt
     const [sortOrder, setSortOrder] = useState(1);    // Default: ascending
+
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearchQuery(searchQuery);
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
+
 
     const handleSort = (column) => {
         if (sortBy === column) {
@@ -23,7 +36,12 @@ const TaskList = () => {
     }
 
     const orderedTasks = useMemo(() => {
-        return [...task].sort((a, b) => {
+
+        const filtered = task.filter(item =>
+            item.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
+        );
+
+        return [...filtered].sort((a, b) => {
             let comparison = 0;
 
             if (sortBy === 'title') {
@@ -34,14 +52,17 @@ const TaskList = () => {
             } else if (sortBy === 'createdAt') {
                 comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
             }
-
             return comparison * sortOrder;
         });
-    }, [task, sortBy, sortOrder]);
+    }, [task, sortBy, sortOrder, debouncedSearchQuery]);
 
     return (
         <div>
             <h1>Lista dei Taskt</h1>
+            <input type="text"
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder='Cerca Task...'
+            />
             <table>
                 <thead>
                     <tr>
